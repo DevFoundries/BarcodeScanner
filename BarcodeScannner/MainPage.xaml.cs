@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using BarcodeScannner.Common;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Search;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Capture;
@@ -93,5 +94,13 @@ namespace BarcodeScannner
             dp.SetText(BarcodeResult.Text);
             Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dp);
         }
+
+        private void Search(object sender, PointerRoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(BarcodeResult.Text)) return;
+            SearchPane.GetForCurrentView().Show(BarcodeResult.Text);
+        }
+
+
     }
 }

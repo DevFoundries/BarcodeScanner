@@ -17,9 +17,24 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Margin="20" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="ScanBarcode" Click="GetBarcode_Click" Height="200" Width="250" VerticalAlignment="Center" FontSize="30">Scan Barcode</Button>
-            <TextBox x:Name="BarcodeResult" Width="500" Margin="30" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"  FontSize="30"></TextBox>
-            <Button x:Name="CopyButton" Width="150" Margin="10" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="30" Click="CopyButton_Click">Copy</Button>
+            <Button x:Name="ScanBarcode" Click="GetBarcode_Click" Width="250" VerticalAlignment="Center" FontSize="25">Scan Barcode</Button>
+            <TextBox x:Name="BarcodeResult" Width="500" Margin="15,0,15,0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="45" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="30"></TextBox>
+            <Border Height="45" Width="45" BorderBrush="White" BorderThickness="2">
+            <Viewbox Height="40" Width="40" Margin="0,0,5,0">
+                <Image Source="Assets/Find.png" PointerPressed="Search"></Image>
+                <!-- Path Data="F1M-185.925,-2026.96L-203.062,-2048.74C-197.485,-2056.51 -197.433,-2067.31 -203.64,-2075.2 -211.167,-2084.76 -225.019,-2086.42 -234.588,-2078.89 -244.154,-2071.36 -245.808,-2057.51 -238.282,-2047.94 -231.986,-2039.95 -221.274,-2037.5 -212.337,-2041.31L-195.262,-2019.61 -185.925,-2026.96z M-231.201,-2053.51C-235.653,-2059.17 -234.674,-2067.36 -229.02,-2071.81 -223.36,-2076.26 -215.169,-2075.29 -210.721,-2069.63 -206.269,-2063.97 -207.245,-2055.78 -212.902,-2051.33 -218.559,-2046.88 -226.752,-2047.86 -231.201,-2053.51z" Stretch="Uniform" Fill="#FFFFFFFF" Width="16" Height="16" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <TransformGroup.Children>
+                                <RotateTransform Angle="0" />
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </TransformGroup.Children>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path -->
+            </Viewbox>
+            </Border>
+            <Button x:Name="CopyButton" Width="150" Margin="10" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="25" Click="CopyButton_Click">Copy</Button>
         </StackPanel>
         <UI:AdControl Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="adControl"
             ApplicationId="1a9c487d-de3d-4223-8950-926fe57fcb1b" 
