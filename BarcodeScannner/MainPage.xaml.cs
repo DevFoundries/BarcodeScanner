@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using BarcodeScannner.Common;
+using BarcodeScannner.ViewModel;
+using Microsoft.Practices.ServiceLocation;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
@@ -32,6 +34,8 @@ namespace BarcodeScannner
     /// </summary>
     public sealed partial class MainPage : LayoutAwarePage
     {
+        private MainViewModel mainViewModel = ServiceLocator.Current.GetInstance<MainViewModel>();
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -76,6 +80,7 @@ namespace BarcodeScannner
                 if (decodedResult != null)
                 {
                     BarcodeResult.Text = decodedResult.Text;
+                    mainViewModel.AddBarcodeData(new BarcodeData() {Barcode = decodedResult.Text});
                 }
                 else
                 {

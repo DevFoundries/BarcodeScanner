@@ -6,17 +6,19 @@
     xmlns:local="using:BarcodeScannner"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Common="using:BarcodeScannner.Common"
-    mc:Ignorable="d" Loaded="StartLayoutUpdates" Unloaded="StopLayoutUpdates">
+    mc:Ignorable="d" Loaded="StartLayoutUpdates" Unloaded="StopLayoutUpdates"
+    DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Grid Style="{StaticResource LayoutRootStyle}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Margin="20" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Grid.Row="0" Margin="20" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Button x:Name="ScanBarcode" Click="GetBarcode_Click" Width="250" VerticalAlignment="Center" FontSize="25">Scan Barcode</Button>
             <TextBox x:Name="BarcodeResult" Width="500" Margin="15,0,15,0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="45" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="30"></TextBox>
             <Border Height="45" Width="45" BorderBrush="White" BorderThickness="2">
@@ -36,7 +38,28 @@
             </Border>
             <Button x:Name="CopyButton" Width="150" Margin="10" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="25" Click="CopyButton_Click">Copy</Button>
         </StackPanel>
-        <UI:AdControl Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="adControl"
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden">
+            <ListView ItemsSource="{Binding BarcodeData}">
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="30" Width="150" Margin="15,0">Header</TextBlock>
+                            <TextBlock FontSize="30" Margin="15,0">Description</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox IsReadOnly="True" Text="{Binding Path=Barcode}" Margin="15" Width="150"></TextBox>
+                            <TextBox Text="{Binding Path=Description,Mode=TwoWay}" Margin="15" Width="600"></TextBox>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+        <UI:AdControl Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="adControl"
             ApplicationId="1a9c487d-de3d-4223-8950-926fe57fcb1b" 
             AdUnitId="10049430" 
             Height="90" 
