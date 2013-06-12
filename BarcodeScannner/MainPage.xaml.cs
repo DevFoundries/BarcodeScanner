@@ -44,7 +44,7 @@ namespace BarcodeScannner
 
         private async void SettingsCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
-            var privacyStatement = new SettingsCommand("privacy", "Privacy Statement", x => Launcher.LaunchUriAsync(new Uri("http://wbsimms.com/Privacy/Privacy.html")));
+            var privacyStatement = new SettingsCommand("privacy", "Privacy Statement", x => Launcher.LaunchUriAsync(new Uri("http://wbsimms.com/Privacy")));
             args.Request.ApplicationCommands.Clear();
             args.Request.ApplicationCommands.Add(privacyStatement);
         }
