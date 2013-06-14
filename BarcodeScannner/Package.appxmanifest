@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="55379Wm.BarrettSimms.EasyBarcodeScannerFree" Publisher="CN=7B4F372A-32B9-405A-AE54-EE84EB99028B" Version="1.0.0.9" />
+  <Identity Name="55379Wm.BarrettSimms.EasyBarcodeScannerFree" Publisher="CN=7B4F372A-32B9-405A-AE54-EE84EB99028B" Version="1.0.0.10" />
   <Properties>
     <DisplayName>Easy Barcode Scanner Free</DisplayName>
     <PublisherDisplayName>Wm. Barrett Simms</PublisherDisplayName>
@@ -19,6 +19,9 @@
         <DefaultTile ShowName="logoOnly" WideLogo="Assets\Barcode_Scanner_Logo_310.png" ShortName="Easy Barcode Scannner" />
         <SplashScreen Image="Assets\Barcode_Scanner_Logo_620.png" BackgroundColor="#006600" />
       </VisualElements>
+      <Extensions>
+        <Extension Category="windows.search" />
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

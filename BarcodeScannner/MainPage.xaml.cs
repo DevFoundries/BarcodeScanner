@@ -96,8 +96,11 @@ namespace BarcodeScannner
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             DataPackage dp = new DataPackage();
-            dp.SetText(BarcodeResult.Text);
-            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dp);
+            if (!string.IsNullOrEmpty(BarcodeResult.Text))
+            {
+                dp.SetText(BarcodeResult.Text);
+                Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dp);
+            }
         }
 
         private void Search(object sender, PointerRoutedEventArgs e)
@@ -105,7 +108,5 @@ namespace BarcodeScannner
             if (string.IsNullOrEmpty(BarcodeResult.Text)) return;
             SearchPane.GetForCurrentView().Show(BarcodeResult.Text);
         }
-
-
     }
 }
