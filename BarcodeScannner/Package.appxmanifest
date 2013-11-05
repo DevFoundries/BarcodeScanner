@@ -1,27 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="55379Wm.BarrettSimms.EasyBarcodeScannerFree" Publisher="CN=7B4F372A-32B9-405A-AE54-EE84EB99028B" Version="1.0.0.10" />
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="55379Wm.BarrettSimms.EasyBarcodeScannerFree" Publisher="CN=7B4F372A-32B9-405A-AE54-EE84EB99028B" Version="1.1.0.10" />
   <Properties>
     <DisplayName>Easy Barcode Scanner Free</DisplayName>
     <PublisherDisplayName>Wm. Barrett Simms</PublisherDisplayName>
     <Logo>Assets\Barcode_Scanner_Logo_50.png</Logo>
   </Properties>
   <Prerequisites>
-    <OSMinVersion>6.2.1</OSMinVersion>
-    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BarcodeScannner.App">
-      <VisualElements DisplayName="Easy Barcode Scanner Free" Logo="Assets\Barcode_Scanner_Logo_150.png" SmallLogo="Assets\Barcode_Scanner_Logo_30.png" Description="A Simple barcode scannner" ForegroundText="light" BackgroundColor="#006600" ToastCapable="false">
-        <DefaultTile ShowName="logoOnly" WideLogo="Assets\Barcode_Scanner_Logo_310.png" ShortName="Easy Barcode Scannner" />
-        <SplashScreen Image="Assets\Barcode_Scanner_Logo_620.png" BackgroundColor="#006600" />
-      </VisualElements>
       <Extensions>
         <Extension Category="windows.search" />
       </Extensions>
+      <m2:VisualElements DisplayName="Easy Barcode Scanner Free" Description="A Simple barcode scannner" BackgroundColor="#006600" ForegroundText="light" ToastCapable="false" Square150x150Logo="Assets\Barcode_Scanner_Logo_150.png" Square30x30Logo="Assets\Barcode_Scanner_Logo_30.png">
+        <m2:DefaultTile ShortName="Easy Barcode Scannner" Wide310x150Logo="Assets\Barcode_Scanner_Logo_310.png">
+          <m2:ShowNameOnTiles>
+            <m2:ShowOn Tile="square150x150Logo" />
+          </m2:ShowNameOnTiles>
+        </m2:DefaultTile>
+        <m2:SplashScreen BackgroundColor="#006600" Image="Assets\Barcode_Scanner_Logo_620.png" />
+      </m2:VisualElements>
     </Application>
   </Applications>
   <Capabilities>
