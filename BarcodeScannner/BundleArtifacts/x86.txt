@@ -1,0 +1,2 @@
+MainPackage=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannner\bin\x86\Release\BarcodeScannner_2.0.0.18_x86.appx
+SymbolPackage=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannner\AppPackages\BarcodeScannner_2.0.0.18_Test\BarcodeScannner_2.0.0.18_x86.appxsym

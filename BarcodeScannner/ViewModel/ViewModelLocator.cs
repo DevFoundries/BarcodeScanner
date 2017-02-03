@@ -14,6 +14,7 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 
 namespace BarcodeScannner.ViewModel
@@ -24,24 +25,21 @@ namespace BarcodeScannner.ViewModel
     /// </summary>
     public class ViewModelLocator
     {
-        /// <summary>
-        /// Initializes a new instance of the ViewModelLocator class.
-        /// </summary>
-        public ViewModelLocator()
+		public const string ScannerPage = "Scanner";
+		public const string MainPage = "Main";
+
+		/// <summary>
+		/// Initializes a new instance of the ViewModelLocator class.
+		/// </summary>
+		public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (ViewModelBase.IsInDesignModeStatic)
-            ////{
-            ////    // Create design time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-            ////}
-            ////else
-            ////{
-            ////    // Create run time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DataService>();
-            ////}
+			NavigationService nav = new NavigationService();
+			nav.Configure(ScannerPage,typeof(ScannerPage));
+			nav.Configure(MainPage, typeof(MainPage));
 
+			SimpleIoc.Default.Register<INavigationService>(()=> nav);
             SimpleIoc.Default.Register<MainViewModel>();
         }
 

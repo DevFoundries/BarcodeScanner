@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Views;
+using BarcodeScannner.Messages;
 
 namespace BarcodeScannner.ViewModel
 {
@@ -18,29 +22,23 @@ namespace BarcodeScannner.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel()
-        {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
-        }
+	    private INavigationService navigationService;
+
+		public MainViewModel(INavigationService navigationService)
+		{
+			this.navigationService = navigationService;
+			Messenger.Default.Register<BarcodeMessage>(this, (b) =>
+			{
+				this.BarcodeResult = b.Barcode;
+				this.AddBarcodeData(new BarcodeData() {Barcode = b.Barcode});
+			});
+		}
 
         public const string BarcodeDataPropertyName = "BarcodeData";
         private ObservableCollection<BarcodeData> barcodeData = new ObservableCollection<BarcodeData>();
         public ObservableCollection<BarcodeData> BarcodeData
         {
-            get
-            {
-                return barcodeData;
-            }
+            get {return barcodeData;}
 
             set
             {
@@ -59,6 +57,19 @@ namespace BarcodeScannner.ViewModel
             barcodeData.Add(data);
             RaisePropertyChanged(BarcodeDataPropertyName);
         }
+
+	    private string barcodeResult;
+
+	    public string BarcodeResult
+	    {
+		    get { return barcodeResult;}
+		    set
+		    {
+			    if (barcodeResult == value) return;
+			    barcodeResult = value;
+				RaisePropertyChanged(()=>BarcodeResult);
+		    }
+	    }
 
     }
 

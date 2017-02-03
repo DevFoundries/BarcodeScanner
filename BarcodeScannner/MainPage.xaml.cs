@@ -23,6 +23,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using GalaSoft.MvvmLight.Views;
 using ZXing;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -32,7 +33,7 @@ namespace BarcodeScannner
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : LayoutAwarePage
+    public sealed partial class MainPage : Page
     {
         private MainViewModel mainViewModel = ServiceLocator.Current.GetInstance<MainViewModel>();
 
@@ -59,38 +60,9 @@ namespace BarcodeScannner
         {
         }
 
-        private async void GetBarcode_Click(object sender, RoutedEventArgs e)
+        private void GetBarcode_Click(object sender, RoutedEventArgs e)
         {
-            string accountKey = "Ubm9A0rJBhbiVmF0EiS4NH2roW8qctxJ4TRj8m1cE20=";
-
-            CameraCaptureUI camera = new CameraCaptureUI();
-//            camera.PhotoSettings.CroppedAspectRatio = new Size(16, 9);
-            StorageFile file = await camera.CaptureFileAsync(CameraCaptureUIMode.Photo);
-            if (file != null)
-            {
-                var prop = await file.Properties.GetImagePropertiesAsync();
-                var stream = await file.OpenReadAsync();
-                var image = new WriteableBitmap((int)prop.Width, (int)prop.Height);
-                image.SetSource(stream);
-                ZXing.BarcodeReader reader = new BarcodeReader();
-                reader.TryHarder = true;
-                reader.PureBarcode = true;
-
-                var decodedResult = reader.Decode(image);
-                if (decodedResult != null)
-                {
-                    BarcodeResult.Text = decodedResult.Text;
-                    mainViewModel.AddBarcodeData(new BarcodeData() {Barcode = decodedResult.Text});
-                }
-                else
-                {
-                    Windows.UI.Popups.MessageDialog d =
-                        new MessageDialog(
-                            "Unable to read barcode. Please try again.\r\nTips\r\n• Ensure the image is in focus\r\n• Crop the image to only the barcode");
-                    IUICommand cmd = await d.ShowAsync();
-                }
-            }
-
+			ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.ScannerPage);
         }
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)

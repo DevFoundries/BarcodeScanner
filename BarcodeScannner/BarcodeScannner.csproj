@@ -14,13 +14,16 @@
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>BarcodeScannner_StoreKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <PackageCertificateThumbprint>BB0E4544B78C9E64F9AA6022216B09196A664C4A</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>9493561389EF99C6FA1C0053CF56382044D7145A</PackageCertificateThumbprint>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <TargetFrameworkVersion />
-    <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -114,13 +117,17 @@
     <Compile Include="Common\BindableBase.cs" />
     <Compile Include="Common\BooleanNegationConverter.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Common\LayoutAwarePage.cs" />
-    <Compile Include="Common\RichTextColumns.cs" />
-    <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Messages\BarcodeMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScannerPage.xaml.cs">
+      <DependentUpon>ScannerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CameraCaptureControl.xaml.cs">
+      <DependentUpon>CameraCaptureControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
@@ -130,7 +137,9 @@
     </AppxManifest>
     <None Include="BarcodeScannner_StoreKey.pfx" />
     <None Include="BarcodeScannner_TemporaryKey.pfx" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Barcode_Scanner_Logo_50.png" />
@@ -139,7 +148,6 @@
     <Content Include="Assets\Barcode_Scanner_Logo_150.png" />
     <Content Include="Assets\Barcode_Scanner_Logo_310.png" />
     <Content Include="Assets\Find.png" />
-    <Content Include="Common\ReadMe.txt" />
     <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -155,34 +163,67 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ScannerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CameraCaptureControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="GalaSoft.MvvmLight.Extras.Win8, Version=4.2.30.23406, Culture=neutral, PublicKeyToken=33a77f5c33c10a68, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\netcore45\GalaSoft.MvvmLight.Extras.Win8.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\windows81\GalaSoft.MvvmLight.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Win8, Version=4.2.30.23406, Culture=neutral, PublicKeyToken=7f0ea4153a3589fc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\netcore45\GalaSoft.MvvmLight.Win8.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\windows81\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=619affe60327fc48, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\netcore45\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.3.0.19033, Culture=neutral, PublicKeyToken=7a953f43091b5a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\windows81\GalaSoft.MvvmLight.Platform.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="zxing.winrt">
-      <HintPath>..\..\Tools\ZXing.Net.0.9.0.0\winrt\zxing.winrt.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WriteableBitmapEx.WinRT, Version=1.5.0.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
+      <HintPath>..\packages\WriteableBitmapEx.1.5.0.0\lib\NetCore45\WriteableBitmapEx.WinRT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ZXing, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\windows8\ZXing.winmd</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="MSAdvertisingXaml, Version=8.1">
-      <Name>Microsoft Advertising SDK for Windows 8.1 %28Xaml%29</Name>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.AdMediatorWindows81, Version=1.0">
+      <Name>Ad Mediator SDK for Windows 8.1 XAML</Name>
+    </SDKReference>
+    <SDKReference Include="Microsoft.VCLibs, Version=12.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows</Name>
     </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\Microsoft.Advertising.JS.10.1609.2\build\Microsoft.Advertising.JS.targets" Condition="Exists('..\packages\Microsoft.Advertising.JS.10.1609.2\build\Microsoft.Advertising.JS.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Advertising.JS.10.1609.2\build\Microsoft.Advertising.JS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Advertising.JS.10.1609.2\build\Microsoft.Advertising.JS.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Advertising.XAML.10.1609.2\build\Microsoft.Advertising.XAML.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Advertising.XAML.10.1609.2\build\Microsoft.Advertising.XAML.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Services.Store.Engagement.10.1610.0\build\Microsoft.Services.Store.Engagement.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Services.Store.Engagement.10.1610.0\build\Microsoft.Services.Store.Engagement.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Advertising.XAML.10.1609.2\build\Microsoft.Advertising.XAML.targets" Condition="Exists('..\packages\Microsoft.Advertising.XAML.10.1609.2\build\Microsoft.Advertising.XAML.targets')" />
+  <Import Project="..\packages\Microsoft.Services.Store.Engagement.10.1610.0\build\Microsoft.Services.Store.Engagement.targets" Condition="Exists('..\packages\Microsoft.Services.Store.Engagement.10.1610.0\build\Microsoft.Services.Store.Engagement.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

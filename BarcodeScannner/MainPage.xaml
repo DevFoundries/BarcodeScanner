@@ -1,4 +1,4 @@
-﻿<Common:LayoutAwarePage
+﻿<Page
     xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
     x:Class="BarcodeScannner.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -6,7 +6,7 @@
     xmlns:local="using:BarcodeScannner"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Common="using:BarcodeScannner.Common"
-    mc:Ignorable="d" Loaded="StartLayoutUpdates" Unloaded="StopLayoutUpdates"
+    mc:Ignorable="d"
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Grid Style="{StaticResource LayoutRootStyle}">
@@ -20,7 +20,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Margin="20" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Button x:Name="ScanBarcode" Click="GetBarcode_Click" Width="250" VerticalAlignment="Center" FontSize="25">Scan Barcode</Button>
-            <TextBox x:Name="BarcodeResult" Width="500" Margin="15,0,15,0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="45" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="30"></TextBox>
+            <TextBox x:Name="BarcodeResult" Text="{Binding BarcodeResult}" Width="500" Margin="15,0,15,0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="45" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="30"></TextBox>
             <Border Height="45" Width="45" BorderBrush="White" BorderThickness="2">
             <Viewbox Height="40" Width="40" Margin="0,0,5,0">
                 <Image Source="Assets/Find.png" PointerPressed="Search"></Image>
@@ -60,8 +60,8 @@
             </ListView>
         </ScrollViewer>
         <UI:AdControl Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="adControl"
-            ApplicationId="1a9c487d-de3d-4223-8950-926fe57fcb1b" 
-            AdUnitId="10049430" 
+            ApplicationId="dfe8036f-17d9-478b-8583-0128e01fa812" 
+            AdUnitId="11669940" 
             Height="90" 
             Margin="0,0,0,0" 
             Width="728"/>
@@ -100,4 +100,4 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>
-</Common:LayoutAwarePage>
+</Page>
