@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="55379Wm.BarrettSimms.EasyBarcodeScannerFree" Publisher="CN=7B4F372A-32B9-405A-AE54-EE84EB99028B" Version="2.0.0.19" />
+  <Identity Name="55379Wm.BarrettSimms.EasyBarcodeScannerFree" Publisher="CN=7B4F372A-32B9-405A-AE54-EE84EB99028B" Version="2.0.0.20" />
   <Properties>
     <DisplayName>Easy Barcode Scanner Free</DisplayName>
     <PublisherDisplayName>Wm. Barrett Simms</PublisherDisplayName>
