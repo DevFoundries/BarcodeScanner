@@ -104,8 +104,6 @@ namespace BarcodeScannner.UserControls
 				DeviceInformationCollection devices = null;
 				captureMgr = new MediaCapture();
 				devices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
-
-
 				// Use the front camera if found one
 				if (devices == null || devices.Count == 0)
 				{
@@ -114,18 +112,24 @@ namespace BarcodeScannner.UserControls
 				}
 
 				DeviceInformation info = null;
-				
+
 				info = devices.FirstOrDefault(x => x.EnclosureLocation != null && x.EnclosureLocation.Panel == Panel.Back);
 				if (info == null)
 					info = devices[0];
 
-				MediaCaptureInitializationSettings settings;
-				settings = new MediaCaptureInitializationSettings { VideoDeviceId = info.Id }; // 0 => front, 1 => back
+				var settings = new MediaCaptureInitializationSettings { VideoDeviceId = info.Id };
 
 
 				await captureMgr.InitializeAsync(settings);
 				VideoEncodingProperties resolutionMax = null;
 				int max = 0;
+				var vdc = captureMgr.VideoDeviceController;
+				var tc = vdc.TorchControl;
+				if (tc.Supported)
+				{
+					tc.PowerPercent = 100;
+					tc.Enabled = true;
+				}
 				var resolutions = captureMgr.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.Photo);
 
 				for (var i = 0; i < resolutions.Count; i++)
@@ -151,6 +155,7 @@ namespace BarcodeScannner.UserControls
 			}
 		}
 
+
 		/// <summary>
 		/// Method to handle the Click event of the Capture Code button
 		/// </summary>
@@ -169,54 +174,49 @@ namespace BarcodeScannner.UserControls
 					}
 
 					ImageEncodingProperties imgFormat = ImageEncodingProperties.CreateJpeg();
-					// create storage file in local app storage
-					StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(
-					"temp.jpg",
-					CreationCollisionOption.GenerateUniqueName);
-					// take photo
-					//var rndStream = new InMemoryRandomAccessStream();
-					//await captureMgr.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateBmp(), rndStream);
-					await captureMgr.CapturePhotoToStorageFileAsync(imgFormat, file);
-					// Get photo as a BitmapImage
-					BitmapImage bmpImage = new BitmapImage(new Uri(file.Path));
+					imgFormat.Height = 200;
+					imgFormat.Width = 400;
+						// create storage file in local app storage
+						StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(
+						"temp.jpg",
+						CreationCollisionOption.GenerateUniqueName);
+						// take photo
+						//var rndStream = new InMemoryRandomAccessStream();
+						//await captureMgr.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateBmp(), rndStream);
+						await captureMgr.CapturePhotoToStorageFileAsync(imgFormat, file);
+						// Get photo as a BitmapImage
+						BitmapImage bmpImage = new BitmapImage(new Uri(file.Path));
 					bmpImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
 					using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read))
 					{
 						wrb = await Windows.UI.Xaml.Media.Imaging.BitmapFactory.New(1, 1).FromStream(fileStream);
 					}
-					//await rndStream.FlushAsync();
-					//rndStream.Seek(0);
+						//await rndStream.FlushAsync();
+						//rndStream.Seek(0);
 
-					//byte[] bytes = new byte[(uint)rndStream.Size];
-					//var dr = new Windows.Storage.Streams.DataReader(rndStream);
-					//await dr.LoadAsync((uint)rndStream.Size);
-					//dr.ReadBytes(bytes);
+						//byte[] bytes = new byte[(uint)rndStream.Size];
+						//var dr = new Windows.Storage.Streams.DataReader(rndStream);
+						//await dr.LoadAsync((uint)rndStream.Size);
+						//dr.ReadBytes(bytes);
 
-					br = new BarcodeReader()
+						br = new BarcodeReader()
 					{
 						Options = new DecodingOptions()
 						{
 							TryHarder = true,
-							PossibleFormats = new []
-							{
-								BarcodeFormat.CODE_39,
-								BarcodeFormat.CODE_128,
-								BarcodeFormat.CODE_93,
-								BarcodeFormat.QR_CODE
-							}
 						}
 					};
-//					res = br.Decode(bytes,400, 200, BitmapFormat.RGB32);
 					res = br.Decode(wrb);
 					CameraClickedEventArgs cameraArgs = null;
+					await file.DeleteAsync(StorageDeleteOption.Default);
 					if (res != null)
 					{
 						QrCodeContent = res.Text;
-						Messenger.Default.Send<BarcodeMessage>(new BarcodeMessage() {Barcode = QrCodeContent});
+						Messenger.Default.Send<BarcodeMessage>(new BarcodeMessage() { Barcode = QrCodeContent });
 						ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.MainPage);
 					}
 
-					timer.Change(4000, Timeout.Infinite);
+//					timer.Change(4000, Timeout.Infinite);
 				});
 			}
 

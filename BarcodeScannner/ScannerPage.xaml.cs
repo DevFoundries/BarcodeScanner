@@ -13,6 +13,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using BarcodeScannner.ViewModel;
+using GalaSoft.MvvmLight.Views;
+using Microsoft.Practices.ServiceLocation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -28,7 +31,12 @@ namespace BarcodeScannner
 		public ScannerPage()
 		{
 			this.InitializeComponent();
+			NavigationCacheMode = NavigationCacheMode.Disabled;
 		}
 
+		private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+		{
+			ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.MainPage);
+		}
 	}
 }

@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="BarcodeScannerUWP.ScannerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BarcodeScannerUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mobile="using:ZXing.Mobile"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Name="customOverlay">
+            <!-- 
+            This UIElement (Grid) is what we'll actually use for our custom overlay 
+            We can even wire up the button events from our mainpage still.
+            -->
+            <Grid Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Background="Black" Foreground="White" HorizontalAlignment="Center" Margin="20,20" FontSize="34" Padding="30,20" Grid.Row="1" Grid.Column="0" Name="buttonCancel">Cancel</Button>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Page>
