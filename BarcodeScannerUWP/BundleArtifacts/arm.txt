@@ -1,0 +1,6 @@
+MainPackage=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\bin\ARM\Release\BarcodeScannerUWP_3.0.0.0_ARM.appx
+SymbolPackage=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\AppPackages\BarcodeScannerUWP_3.0.0.0_Test\BarcodeScannerUWP_3.0.0.0_ARM.appxsym
+ResourcePack=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\bin\ARM\Release\BarcodeScannerUWP_3.0.0.0_scale-100.appx
+ResourcePack=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\bin\ARM\Release\BarcodeScannerUWP_3.0.0.0_scale-125.appx
+ResourcePack=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\bin\ARM\Release\BarcodeScannerUWP_3.0.0.0_scale-150.appx
+ResourcePack=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\bin\ARM\Release\BarcodeScannerUWP_3.0.0.0_scale-400.appx

@@ -6,7 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:ignore="http://www.galasoft.ch/ignore"
              mc:Ignorable="d ignore"
-             RequestedTheme="Dark">
+             RequestedTheme="Dark"
+             >
     
     <Application.Resources>
         <!--Global View Model Locator-->

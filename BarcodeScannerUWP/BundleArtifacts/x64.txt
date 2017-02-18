@@ -1,0 +1,2 @@
+MainPackage=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\bin\x64\Release\BarcodeScannerUWP_3.0.0.0_x64.appx
+SymbolPackage=C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\AppPackages\BarcodeScannerUWP_3.0.0.0_Test\BarcodeScannerUWP_3.0.0.0_x64.appxsym
