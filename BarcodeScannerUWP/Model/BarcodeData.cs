@@ -8,8 +8,8 @@ namespace BarcodeScannerUWP.Model
 {
 	public class BarcodeData
 	{
+		public int Id { get; set; }
 		public string Barcode { get; set; }
 		public string Description { get; set; }
-
 	}
 }

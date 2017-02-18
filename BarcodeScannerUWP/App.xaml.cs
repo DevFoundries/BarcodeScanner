@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
@@ -19,8 +22,7 @@ namespace BarcodeScannerUWP
 	sealed partial class App
 	{
 		private ApplicationDataContainer localData;
-		private const string SettingsKey = "Settings";
-
+		private const string DataFile = "DataFile.json";
 		public App()
 		{
 			InitializeComponent();
@@ -33,7 +35,7 @@ namespace BarcodeScannerUWP
 		/// will be used such as when the application is launched to open a specific file.
 		/// </summary>
 		/// <param name="e">Details about the launch request and process.</param>
-		protected override void OnLaunched(LaunchActivatedEventArgs e)
+		protected override async void OnLaunched(LaunchActivatedEventArgs e)
 		{
 
 #if DEBUG
@@ -71,10 +73,15 @@ namespace BarcodeScannerUWP
 				rootFrame.Navigate(typeof(MainPage), e.Arguments);
 			}
 
-			if (this.localData.Values[SettingsKey] != null)
+			var files = await ApplicationData.Current.LocalFolder.GetFilesAsync();
+			var exists = files.Any(x => x.Name == DataFile);
+			if (exists)
 			{
+				var file = await ApplicationData.Current.LocalFolder.GetFileAsync(DataFile);
+				var text = await FileIO.ReadTextAsync(file);
 				ServiceLocator.Current.GetInstance<MainViewModel>().BarcodeData =
-					JsonConvert.DeserializeObject<List<BarcodeData>>(this.localData.Values[SettingsKey].ToString());
+					JsonConvert.DeserializeObject<ObservableCollection<BarcodeData>>(text);
+
 			}
 
 			// Ensure the current window is active
@@ -95,12 +102,13 @@ namespace BarcodeScannerUWP
 		/// </summary>
 		/// <param name="sender">The source of the suspend request.</param>
 		/// <param name="e">Details about the suspend request.</param>
-		private void OnSuspending(object sender, SuspendingEventArgs e)
+		private async void OnSuspending(object sender, SuspendingEventArgs e)
 		{
 			var deferral = e.SuspendingOperation.GetDeferral();
 			var settings = ServiceLocator.Current.GetInstance<MainViewModel>().BarcodeData;
 			var settingsString = JsonConvert.SerializeObject(settings);
-			this.localData.Values[SettingsKey] = settingsString;
+			var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(DataFile, CreationCollisionOption.ReplaceExisting);
+			await Windows.Storage.FileIO.WriteTextAsync(file, settingsString);
 			deferral.Complete();
 		}
 	}

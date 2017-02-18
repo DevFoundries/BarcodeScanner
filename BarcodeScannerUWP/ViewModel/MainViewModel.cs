@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using GalaSoft.MvvmLight;
@@ -19,6 +21,7 @@ namespace BarcodeScannerUWP.ViewModel
 		private readonly INavigationService _navigationService;
 		private string barcode;
 		private RelayCommand copyCommand;
+		private RelayCommand<int> removeCommand;
 
 		public MainViewModel(
 			IDataService dataService,
@@ -36,8 +39,8 @@ namespace BarcodeScannerUWP.ViewModel
 			set { Set(() => Barcode,ref barcode, value); }
 		}
 
-		public List<BarcodeData> barcodeData = new List<BarcodeData>();
-		public List<BarcodeData> BarcodeData
+		public ObservableCollection<BarcodeData> barcodeData = new ObservableCollection<BarcodeData>();
+		public ObservableCollection<BarcodeData> BarcodeData
 		{
 			get { return this.barcodeData; }
 			set { Set(() => BarcodeData, ref barcodeData, value); }
@@ -45,7 +48,9 @@ namespace BarcodeScannerUWP.ViewModel
 
 		public void AddBarcodeData(BarcodeData data)
 		{
-			barcodeData.Add(data);
+			data.Id = barcodeData.Count;
+			barcodeData.Insert(0,data);
+			this.Barcode = data.Barcode;
 			RaisePropertyChanged(()=>BarcodeData);
 		}
 
@@ -62,5 +67,19 @@ namespace BarcodeScannerUWP.ViewModel
 			}));
 			}
 		}
+
+		public RelayCommand<int> RemoveCommand
+		{
+			get
+			{
+				return removeCommand ?? (removeCommand = new RelayCommand<int>((i) =>
+				{
+					var record = barcodeData.FirstOrDefault(x => x.Id == i);
+					BarcodeData.Remove(record);
+					RaisePropertyChanged(()=>BarcodeData);
+				}));
+			}
+		}
+
 	}
 }

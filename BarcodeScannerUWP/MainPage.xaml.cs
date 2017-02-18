@@ -1,4 +1,6 @@
-﻿using Windows.UI.Core;
+﻿using System;
+using Windows.UI.Core;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using BarcodeScannerUWP.ViewModel;
@@ -43,6 +45,18 @@ namespace BarcodeScannerUWP
 			//});
 			//Vm.Barcode = result.Text;
 			ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.ScannerPage);
+		}
+
+		private void RemoveEntry(object sender, TappedRoutedEventArgs e)
+		{
+			var b = sender as Button;
+			if (b == null) return;
+			var id = Int32.Parse(b.CommandParameter.ToString());
+			//var stackPanel = b.Parent as StackPanel;
+
+			//this.BarcodeListView.Items.RemoveAt(id);
+			Vm.RemoveCommand.Execute(id);
+	//		this.BarcodeListView.ItemsSource = Vm.BarcodeData;
 		}
 	}
 }
