@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage.Pickers;
+using Windows.Storage.Provider;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -81,5 +84,40 @@ namespace BarcodeScannerUWP.ViewModel
 			}
 		}
 
+		private RelayCommand fileSaveCommand;
+		public RelayCommand FileSaveCommand
+		{
+			get
+			{
+				return fileSaveCommand ?? (fileSaveCommand = new RelayCommand(async () =>
+				{
+					FileSavePicker saver = new FileSavePicker();
+					saver.SuggestedStartLocation = PickerLocationId.Desktop;
+					saver.FileTypeChoices.Add("CSV", new List<string>() {".csv"});
+					saver.SuggestedFileName = "BarcodeData";
+					var file = await saver.PickSaveFileAsync();
+					if (file != null)
+					{
+						StringBuilder sb = new StringBuilder("BarcodeId,Barcode,Description\r\n");
+						foreach (var row in BarcodeData)
+						{
+							sb.AppendLine(String.Join(",", row.Id, row.Barcode, row.Description));
+						}
+
+						Windows.Storage.CachedFileManager.DeferUpdates(file);
+						await Windows.Storage.FileIO.WriteTextAsync(file,sb.ToString());
+						var status = await Windows.Storage.CachedFileManager.CompleteUpdatesAsync(file);
+						if (status == FileUpdateStatus.Complete)
+						{
+							await this.dialogService.ShowMessage("File saved", "Success");
+						}
+						else
+						{
+							await this.dialogService.ShowError("Unable to save file","Error","Ok",null);
+						}
+					}
+				}));
+			}
+		}
 	}
 }

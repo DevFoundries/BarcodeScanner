@@ -2,23 +2,25 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="using:Microsoft.Advertising.WinRT.UI"
       x:Class="BarcodeScannerUWP.MainPage"
       mc:Ignorable="d"
       d:DesignWidth="700"
-      DataContext="{Binding Main, Source={StaticResource Locator}}" Margin="20">
+      DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="15">
             <Button FontSize="20" HorizontalAlignment="Center" Margin="10,0" Tapped="UIElement_OnTapped">Scan Barcode</Button>
             <TextBox x:Name="Barcode" HorizontalAlignment="Center" Margin="10,0" Width="500" Text="{Binding Barcode,Mode=TwoWay}"></TextBox>
             <Button FontSize="20" HorizontalAlignment="Center" Margin="10,0" Command="{Binding CopyCommand}">Copy</Button>
         </StackPanel>
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Center">
             <ListView x:Name="BarcodeListView" ItemsSource="{Binding BarcodeData}">
                 <ListView.HeaderTemplate>
                     <DataTemplate>
@@ -39,9 +41,15 @@
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollViewer>
-        <CommandBar Grid.Row="2">
-            <AppBarButton Icon="Download" Label="Save"></AppBarButton>
-            <AppBarButton Icon="Help" Label="Help"></AppBarButton>
+        <ui:AdControl Grid.Row="2" ApplicationId="dfe8036f-17d9-478b-8583-0128e01fa812"
+                      AdUnitId="11669940"
+                      HorizontalAlignment="Center"
+                      Height="90"
+                      VerticalAlignment="Top"
+                      Width="728"
+                  ></ui:AdControl>
+        <CommandBar Grid.Row="3">
+            <AppBarButton Icon="Download" IsCompact="True" Label="Save" Command="{Binding FileSaveCommand}"></AppBarButton>
         </CommandBar>
     </Grid>
 </Page>
