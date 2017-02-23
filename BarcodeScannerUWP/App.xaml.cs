@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
 using Windows.Storage;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -13,6 +16,7 @@ using BarcodeScannerUWP.Model;
 using BarcodeScannerUWP.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using Application = Xamarin.Forms.Application;
@@ -61,6 +65,8 @@ namespace BarcodeScannerUWP
 					//TODO: Load state from previously suspended application
 				}
 
+				await LoaData();
+
 				// Place the frame in the current Window
 				Window.Current.Content = rootFrame;
 			}
@@ -72,23 +78,42 @@ namespace BarcodeScannerUWP
 				// parameter
 				rootFrame.Navigate(typeof(MainPage), e.Arguments);
 			}
+			// Ensure the current window is active
+			Window.Current.Activate();
+			DispatcherHelper.Initialize();
 
+		}
+
+		public async Task LoaData()
+		{
 			var files = await ApplicationData.Current.LocalFolder.GetFilesAsync();
 			var exists = files.Any(x => x.Name == DataFile);
 			if (exists)
 			{
 				var file = await ApplicationData.Current.LocalFolder.GetFileAsync(DataFile);
 				var text = await FileIO.ReadTextAsync(file);
-				ServiceLocator.Current.GetInstance<MainViewModel>().BarcodeData =
-					JsonConvert.DeserializeObject<ObservableCollection<BarcodeData>>(text);
+				if (string.IsNullOrEmpty(text) || text == "null")
+				{
+					await ServiceLocator.Current.GetInstance<IDialogService>()
+						.ShowError("We found a data file, but there was nothing in it.", "Error", "Ok", null);
+					return;
+				}
+
+				var data = JsonConvert.DeserializeObject<ObservableCollection<BarcodeData>>(text);
+				if (data == null)
+				{
+					await ServiceLocator.Current.GetInstance<IDialogService>()
+						.ShowError("Unable to load data. Please reinstall.", "Ooops!", "Ok", null);
+					return;
+
+				}
+				ServiceLocator.Current.GetInstance<MainViewModel>().BarcodeData = data;
 
 			}
 
-			// Ensure the current window is active
-			Window.Current.Activate();
-			DispatcherHelper.Initialize();
 
 		}
+
 
 		void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
 		{

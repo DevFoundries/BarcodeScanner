@@ -7,6 +7,7 @@
       mc:Ignorable="d"
       d:DesignWidth="700"
       DataContext="{Binding Main, Source={StaticResource Locator}}">
+    
 
     <Grid>
         <Grid.RowDefinitions>
@@ -15,28 +16,40 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="15">
-            <Button FontSize="20" HorizontalAlignment="Center" Margin="10,0" Tapped="UIElement_OnTapped">Scan Barcode</Button>
-            <TextBox x:Name="Barcode" HorizontalAlignment="Center" Margin="10,0" Width="500" Text="{Binding Barcode,Mode=TwoWay}"></TextBox>
-            <Button FontSize="20" HorizontalAlignment="Center" Margin="10,0" Command="{Binding CopyCommand}">Copy</Button>
-        </StackPanel>
+        <Grid.ColumnDefinitions><ColumnDefinition Width="*"></ColumnDefinition></Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Margin="15,30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" FontSize="20" HorizontalAlignment="Center" Margin="10,0" Tapped="UIElement_OnTapped">Scan Barcode</Button>
+            <TextBox Grid.Column="1" x:Name="Barcode" HorizontalAlignment="Stretch" Margin="10,0" Text="{Binding Barcode,Mode=TwoWay}"></TextBox>
+            <Button Grid.Column="2" FontSize="20" HorizontalAlignment="Center" Margin="10,0" Command="{Binding CopyCommand}">Copy</Button>
+        </Grid>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Center">
             <ListView x:Name="BarcodeListView" ItemsSource="{Binding BarcodeData}">
-                <ListView.HeaderTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="30" Width="150" Margin="15,0">Barcode</TextBlock>
-                            <TextBlock FontSize="30" Margin="15,0">Description</TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.HeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox IsReadOnly="True" Text="{Binding Path=Barcode}" Margin="15" Width="150"></TextBox>
-                            <TextBox Text="{Binding Path=Description,Mode=TwoWay}" Margin="15" Width="600"></TextBox>
-                            <Button Margin="15,0" Tapped="RemoveEntry" CommandParameter="{Binding Id}" Tag="{Binding Id}" ><SymbolIcon Symbol="Delete"></SymbolIcon></Button>
-                        </StackPanel>
+                        <Grid Margin="0,0,0,30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" FontSize="20" Margin="15,0,0,10" VerticalAlignment="Center" Grid.Column="0">Barcode</TextBlock>
+                            <TextBlock Grid.Row="1" FontSize="20" Margin="15,0,0,10" VerticalAlignment="Center" Grid.Column="0">Description</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Margin="15,0,0,10" IsReadOnly="True" Text="{Binding Path=Barcode}" HorizontalAlignment="Stretch"></TextBox>
+                            <TextBox Grid.Column="1" MinWidth="300" Grid.Row="1" Margin="15,0,0,10" x:Name="descriptionBox" Text="{Binding Path=Description,Mode=TwoWay}" TextWrapping="Wrap" HorizontalAlignment="Stretch">
+                            </TextBox>
+                            <Button Grid.Column="2" Grid.Row="0" Margin="15,0" Foreground="White"  VerticalAlignment="Center" HorizontalAlignment="Left" Tapped="RemoveEntry" CommandParameter="{Binding Id}" Tag="{Binding Id}">
+                                <SymbolIcon Symbol="Delete"></SymbolIcon>
+                            </Button>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

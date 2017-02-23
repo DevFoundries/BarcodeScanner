@@ -18,6 +18,19 @@ namespace BarcodeScannerUWP
 		{
 			InitializeComponent();
 			ZXing.Net.Mobile.Forms.WindowsUniversal.ZXingScannerViewRenderer.Init();
+			this.SizeChanged += MainPage_SizeChanged;
+		}
+
+		private void MainPage_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+		{
+
+			foreach (var item in this.BarcodeListView.Items)
+			{
+				ListViewItem control = this.BarcodeListView.ContainerFromItem(item) as ListViewItem;
+				Grid g = control?.ContentTemplateRoot as Grid;
+				if (g == null) continue;
+				g.Width = this.ActualWidth - 20;
+			}
 		}
 
 		private void SystemNavigationManagerBackRequested(object sender, BackRequestedEventArgs e)
