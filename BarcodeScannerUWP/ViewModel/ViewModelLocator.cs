@@ -10,6 +10,8 @@ namespace BarcodeScannerUWP.ViewModel
 	{
 		public const string ScannerPage = "ScannerPage";
 		public const string MainPage = "MainPage";
+		public const string DataFile = "DataFile.json";
+
 
 		static ViewModelLocator()
 		{

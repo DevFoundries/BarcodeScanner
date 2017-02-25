@@ -1,1 +1,1 @@
-C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\AppPackages\BarcodeScannerUWP_3.0.0.0\BarcodeScannerUWP_3.0.0.0_x86_x64_arm.appxbundle
+C:\Projects\wbsimms\BarcodeScanner\BarcodeScannerUWP\AppPackages\BarcodeScannerUWP_3.0.1.0\BarcodeScannerUWP_3.0.1.0_x86_x64_arm.appxbundle

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Provider;
 using GalaSoft.MvvmLight;
@@ -14,6 +15,7 @@ using GalaSoft.MvvmLight.Threading;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using BarcodeScannerUWP.Model;
+using Newtonsoft.Json;
 
 namespace BarcodeScannerUWP.ViewModel
 {
@@ -34,6 +36,12 @@ namespace BarcodeScannerUWP.ViewModel
 			this.dialogService = dialogService;
 			_dataService = dataService;
 			_navigationService = navigationService;
+			Init();
+		}
+
+		private async Task Init()
+		{
+			await LoadData();
 		}
 
 		public string Barcode
@@ -117,6 +125,34 @@ namespace BarcodeScannerUWP.ViewModel
 						}
 					}
 				}));
+			}
+		}
+
+		public async Task LoadData()
+		{
+			var files = await ApplicationData.Current.LocalFolder.GetFilesAsync();
+			var exists = files.Any(x => x.Name == ViewModelLocator.DataFile);
+			if (exists)
+			{
+				var file = files.FirstOrDefault(x => x.Name == ViewModelLocator.DataFile);
+//				var file = await ApplicationData.Current.LocalFolder.GetFileAsync(ViewModelLocator.DataFile);
+				var text = await FileIO.ReadTextAsync(file);
+				if (string.IsNullOrEmpty(text) || text == "null")
+				{
+					await ServiceLocator.Current.GetInstance<IDialogService>()
+						.ShowError("We found a data file, but there was nothing in it.", "Error", "Ok", null);
+					return;
+				}
+
+				var data = JsonConvert.DeserializeObject<ObservableCollection<BarcodeData>>(text);
+				if (data == null)
+				{
+					await ServiceLocator.Current.GetInstance<IDialogService>()
+						.ShowError("Unable to load data. Please reinstall.", "Ooops!", "Ok", null);
+					return;
+
+				}
+				this.BarcodeData = data;
 			}
 		}
 	}
