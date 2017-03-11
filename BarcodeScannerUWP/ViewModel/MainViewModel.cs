@@ -67,14 +67,14 @@ namespace BarcodeScannerUWP.ViewModel
 
 		public RelayCommand CopyCommand
 		{
-			get { return copyCommand ?? (copyCommand = new RelayCommand(() =>
+			get { return copyCommand ?? (copyCommand = new RelayCommand(async () =>
 			{
 				DataPackage dataPackage = new DataPackage
 				{
 					RequestedOperation = DataPackageOperation.Copy
 				};
 				dataPackage.SetText(this.Barcode);
-				this.dialogService.ShowMessage("Barcode copied to clipboard!", "Success");
+				await this.dialogService.ShowMessage("Barcode copied to clipboard!", "Success");
 			}));
 			}
 		}
