@@ -17,6 +17,7 @@ using BarcodeScannerUWP.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using GalaSoft.MvvmLight.Views;
+using Microsoft.HockeyApp;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using Application = Xamarin.Forms.Application;
@@ -31,6 +32,7 @@ namespace BarcodeScannerUWP
 			InitializeComponent();
 			Suspending += OnSuspending;
 			this.localData = ApplicationData.Current.LocalSettings;
+			Microsoft.HockeyApp.HockeyClient.Current.Configure("5e3f1361ff74497ba3da1fbd3b27c9dd");
 		}
 
 		/// <summary>
@@ -40,6 +42,7 @@ namespace BarcodeScannerUWP
 		/// <param name="e">Details about the launch request and process.</param>
 		protected override async void OnLaunched(LaunchActivatedEventArgs e)
 		{
+			Microsoft.HockeyApp.HockeyClient.Current.TrackEvent("OnLaunched");
 
 #if DEBUG
             //if (System.Diagnostics.Debugger.IsAttached)
