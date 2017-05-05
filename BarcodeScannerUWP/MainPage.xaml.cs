@@ -62,7 +62,8 @@ namespace BarcodeScannerUWP
 
 		private void RemoveEntry(object sender, TappedRoutedEventArgs e)
 		{
-			var b = sender as Button;
+		    Microsoft.HockeyApp.HockeyClient.Current.TrackEvent("Entry Removed");
+            var b = sender as Button;
 			if (b == null) return;
 			var id = Int32.Parse(b.CommandParameter.ToString());
 			//var stackPanel = b.Parent as StackPanel;

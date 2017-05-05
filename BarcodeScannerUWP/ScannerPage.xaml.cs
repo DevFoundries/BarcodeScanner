@@ -40,7 +40,9 @@ namespace BarcodeScannerUWP
 
 		private async void StartScan()
 		{
-			if (overlay == null)
+		    Microsoft.HockeyApp.HockeyClient.Current.TrackEvent("ScannerStart");
+            
+            if (overlay == null)
 			{
 				overlay = this.customOverlay.Children[0];
 				this.customOverlay.Children.RemoveAt(0);
@@ -50,23 +52,35 @@ namespace BarcodeScannerUWP
 
 			scanner.UseCustomOverlay = true;
 			scanner.CustomOverlay = overlay;
+            scanner.AutoFocus();
 
 			this.buttonCancel.Tapped += (sender, args) =>
 			{
 				ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.MainPage);
 			};
 
-			await scanner.Scan().ContinueWith(t =>
-			{
-				DispatcherHelper.CheckBeginInvokeOnUI(() =>
-					ServiceLocator.Current.GetInstance<IDialogService>().ShowMessage(t.Result.Text, "Success","Ok", () =>
-					{
-						ServiceLocator.Current.GetInstance<MainViewModel>().AddBarcodeData(new BarcodeData(){Barcode = t.Result.Text});
-						ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.MainPage);
-					})
-				)
-				;
-			});
+		    try
+		    {
+		        await scanner.Scan().ContinueWith(t =>
+		        {
+		            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+		                ServiceLocator.Current.GetInstance<IDialogService>().ShowMessage(t.Result.Text, "Success", "Ok",
+		                    () =>
+		                    {
+		                        ServiceLocator.Current.GetInstance<MainViewModel>()
+		                            .AddBarcodeData(new BarcodeData() {Barcode = t.Result.Text});
+		                        ServiceLocator.Current.GetInstance<INavigationService>()
+		                            .NavigateTo(ViewModelLocator.MainPage);
+		                    }));
+		        });
+
+		    }
+            catch (Exception e)
+		    {
+		        Microsoft.HockeyApp.HockeyClient.Current.TrackEvent("Scan Failed");
+		        Microsoft.HockeyApp.HockeyClient.Current.TrackException(e);
+		        throw;
+		    }
 		}
 	}
 }

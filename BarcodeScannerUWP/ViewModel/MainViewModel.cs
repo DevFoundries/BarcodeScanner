@@ -99,7 +99,8 @@ namespace BarcodeScannerUWP.ViewModel
 			{
 				return fileSaveCommand ?? (fileSaveCommand = new RelayCommand(async () =>
 				{
-					FileSavePicker saver = new FileSavePicker();
+				    Microsoft.HockeyApp.HockeyClient.Current.TrackEvent("File Saved");
+                    FileSavePicker saver = new FileSavePicker();
 					saver.SuggestedStartLocation = PickerLocationId.Desktop;
 					saver.FileTypeChoices.Add("CSV", new List<string>() {".csv"});
 					saver.SuggestedFileName = "BarcodeData";

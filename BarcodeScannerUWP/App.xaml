@@ -7,7 +7,6 @@
 			 xmlns:ignore="http://www.galasoft.ch/ignore"
              mc:Ignorable="d ignore"
              RequestedTheme="Dark"
-             
              >
     
     <Application.Resources>
